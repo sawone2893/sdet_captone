@@ -17,5 +17,8 @@ public interface WebActions {
 	public void type(WebElement e,String textToType);
 	public void closeCurrentTabWindow();
 	public void closeBrowser();
+	public String fetchTitle();
+	public void implementImplicitWait(int waitInSeconds);
+	public String getVisibleText(WebElement e);
 
 }

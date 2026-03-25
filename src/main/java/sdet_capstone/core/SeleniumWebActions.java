@@ -1,5 +1,6 @@
 package sdet_capstone.core;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -119,6 +120,22 @@ public class SeleniumWebActions implements WebActions {
 	public void closeBrowser() {
 		driver.quit();
 
+	}
+
+	@Override
+	public String fetchTitle() {
+		return driver.getTitle();
+	}
+
+	@Override
+	public void implementImplicitWait(int waitInSeconds) {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(waitInSeconds));	
+	}
+
+	@Override
+	public String getVisibleText(WebElement e) {
+		// TODO Auto-generated method stub
+		return e.getText();
 	}
 
 }
