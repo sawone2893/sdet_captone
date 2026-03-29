@@ -6,30 +6,32 @@ import org.openqa.selenium.WebElement;
 
 import sdet_capstone.core.SeleniumWebActions;
 import sdet_capstone.core.WebActions;
+import sdet_capstone.utils.BrowserDriverManager;
 
 public class BaseClass {
 
 	private static WebActions webAction = null;
+	private static BrowserDriverManager bdManager=null;
 
-	public static void launchBrowser(String browserType) {
-		webAction = new SeleniumWebActions();
-		webAction.initBrowser(browserType);
+	public static void launchBrowser(String browserType,boolean isHeadless) {
+		bdManager=BrowserDriverManager.getInstance(browserType, isHeadless);
+		webAction = new SeleniumWebActions(bdManager.getDriver());
 	}
 
 	public static void startApp(String appUrl) {
 		webAction.launchUrl(appUrl);
+	}
+	
+	public static void maximizeBrowserMode() {
+		webAction.maximizeBrowser();
 	}
 
 	public static void implicitWait(int waitInSeconds) {
 		webAction.implementImplicitWait(waitInSeconds);
 	}
 
-	public static void closeAppCurrentTabWindow() {
-		webAction.closeCurrentTabWindow();
-	}
-
 	public static void closeApp() {
-		webAction.closeBrowser();
+		bdManager.unloadDriver();
 	}
 
 	public static WebElement getWebElement(String locatorType, String locator) {
