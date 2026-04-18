@@ -17,5 +17,8 @@ public interface WebActions {
 	public String fetchTitle();
 	public void implementImplicitWait(int waitInSeconds);
 	public String getVisibleText(WebElement e);
+	public String captureScreenshot();
+	public void captureScreenshot(String filepath);
+	public void captureScreenshot(WebElement e,String filePath);
 
 }

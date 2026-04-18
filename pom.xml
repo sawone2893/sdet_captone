@@ -50,7 +50,51 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>5.5.0</version>
 		</dependency>
+
+		<!-- Source:
+		https://mvnrepository.com/artifact/com.aventstack/extentreports -->
+		<dependency>
+			<groupId>com.aventstack</groupId>
+			<artifactId>extentreports</artifactId>
+			<version>5.1.2</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+				<browserType>firefox</browserType>
+				<isHeadless>false</isHeadless>
+				<suiteXmlFile>testng_firefox.xml</suiteXmlFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>qa</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<env>qa</env>
+				<browserType>chrome</browserType>
+				<isHeadless>false</isHeadless>
+				<suiteXmlFile>testng_chrome.xml</suiteXmlFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>prod</id>
+			<properties>
+				<env>prod</env>
+				<browserType>chrome</browserType>
+				<isHeadless>false</isHeadless>
+				<suiteXmlFile>testng_edge.xml</suiteXmlFile>
+			</properties>
+		</profile>
+	</profiles>
 
 	<build>
 		<pluginManagement><!-- lock down plugins versions to avoid using Maven
@@ -78,8 +122,13 @@
 					<configuration>
 						<!-- Link your TestNG XML -->
 						<suiteXmlFiles>
-							<suiteXmlFile>testng.xml</suiteXmlFile>
+							<suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
 						</suiteXmlFiles>
+						<systemPropertyVariables>
+							<env>${env}</env>
+							<browserType>${browserType}</browserType>
+							<isHeadles>${isHeadless}</isHeadles>
+						</systemPropertyVariables>
 					</configuration>
 				</plugin>
 				<plugin>

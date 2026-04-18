@@ -1,9 +1,14 @@
 package sdet_capstone.core;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -114,6 +119,34 @@ public class SeleniumWebActions implements WebActions {
 	public String getVisibleText(WebElement e) {
 		// TODO Auto-generated method stub
 		return e.getText();
+	}
+
+	@Override
+	public String captureScreenshot() {
+		return ((TakesScreenshot) this.driver).getScreenshotAs(OutputType.BASE64);
+	}
+
+	@Override
+	public void captureScreenshot(String filepath) {
+		File src = ((TakesScreenshot) this.driver).getScreenshotAs(OutputType.FILE);
+		try {
+			FileUtils.copyFile(src, new File(filepath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void captureScreenshot(WebElement e, String filePath) {
+		File src = e.getScreenshotAs(OutputType.FILE);
+
+		try {
+			FileUtils.copyFile(src, new File(filePath));
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
 	}
 
 }

@@ -11,17 +11,16 @@ import sdet_capstone.utils.BrowserDriverManager;
 public class BaseClass {
 
 	private static WebActions webAction = null;
-	private static BrowserDriverManager bdManager=null;
 
-	public static void launchBrowser(String browserType,boolean isHeadless) {
-		bdManager=BrowserDriverManager.getInstance(browserType, isHeadless);
-		webAction = new SeleniumWebActions(bdManager.getDriver());
+	public static void launchBrowser(String browserType, boolean isHeadless) {
+		BrowserDriverManager.initDriver(browserType, isHeadless);
+		webAction = new SeleniumWebActions(BrowserDriverManager.getDriver());
 	}
 
 	public static void startApp(String appUrl) {
 		webAction.launchUrl(appUrl);
 	}
-	
+
 	public static void maximizeBrowserMode() {
 		webAction.maximizeBrowser();
 	}
@@ -31,7 +30,7 @@ public class BaseClass {
 	}
 
 	public static void closeApp() {
-		bdManager.unloadDriver();
+		BrowserDriverManager.unloadDriver();
 	}
 
 	public static WebElement getWebElement(String locatorType, String locator) {
@@ -60,8 +59,8 @@ public class BaseClass {
 	public static void clickElement(String locatorType, String locatorValue) {
 		if (isElementPresent(locatorType, locatorValue)) {
 			webAction.click(getWebElement(locatorType, locatorValue));
-		}else {
-			throw new IllegalArgumentException("Locator Not Present: "+locatorValue);
+		} else {
+			throw new IllegalArgumentException("Locator Not Present: " + locatorValue);
 		}
 
 	}
@@ -69,21 +68,33 @@ public class BaseClass {
 	public static void typeIntoTextbox(String locatorType, String locatorValue, String textToType) {
 		if (isElementPresent(locatorType, locatorValue)) {
 			webAction.type(getWebElement(locatorType, locatorValue), textToType);
-		}else {
-			throw new IllegalArgumentException("Locator Not Present: "+locatorValue);
+		} else {
+			throw new IllegalArgumentException("Locator Not Present: " + locatorValue);
 		}
 	}
 
 	public static String getPageTitle() {
 		return webAction.fetchTitle();
 	}
-	
+
 	public static String getElementText(String locatorType, String locatorValue) {
 		if (isElementPresent(locatorType, locatorValue)) {
 			return webAction.getVisibleText(getWebElement(locatorType, locatorValue));
-		}else {
-			throw new IllegalArgumentException("Locator Not Present: "+locatorValue);
+		} else {
+			throw new IllegalArgumentException("Locator Not Present: " + locatorValue);
 		}
+	}
+
+	public static String captureSnap() {
+		return webAction.captureScreenshot();
+	}
+
+	public static void captureSnap(String filePath) {
+		webAction.captureScreenshot(filePath);
+	}
+
+	public static void captureSnap(WebElement e, String filePath) {
+		webAction.captureScreenshot(e, filePath);
 	}
 
 }
